@@ -1,4 +1,4 @@
-- git (for windows) et éventuellement complément tortoise-git .
+﻿- git (for windows) et éventuellement complément tortoise-git .
 - jdk 11 (ou open jdk11) , jdk 8 possible si déjà installé
 - eclipse JEE (idéalement en version 2021) avec prise en charge JEE et maven
   (maven intégré)
@@ -7,3 +7,4 @@
 - eventuellement Soap-ui pour tester WS-Soap
 - éventuellement PostMan pour tester WS-REST
 =====
+*
