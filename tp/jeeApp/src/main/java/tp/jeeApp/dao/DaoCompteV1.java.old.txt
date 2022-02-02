@@ -1,0 +1,14 @@
+package tp.jeeApp.dao;
+
+import java.util.List;
+import java.util.Optional;
+
+import tp.jeeApp.entity.Compte;
+
+public interface DaoCompteV1 {
+	Optional<Compte> findById(Long numCompte); 
+	List<Compte> findAll();
+	Compte save(Compte compte); //saveOrUpdate 
+	void deleteById(Long numCpte);
+	//....
+}

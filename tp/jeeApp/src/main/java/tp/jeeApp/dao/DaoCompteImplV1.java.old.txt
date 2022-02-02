@@ -1,0 +1,56 @@
+package tp.jeeApp.dao;
+
+import java.util.List;
+import java.util.Optional;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
+
+import tp.jeeApp.entity.Compte;
+
+//@Named en CDI (pas Spring)
+//@Component // composant Spring quelconque
+@Repository // composant Spring d'accès aux données
+@Transactional( /* propagation = Propagation.REQUIRED par defaut */)
+public class DaoCompteImplV1 implements DaoCompte {
+	
+	@PersistenceContext //pour intialiser entityManager depuis /META-INF/persistence.xml
+	                    //ou bien depuis application-....properties dans un spring spring-boot
+	private EntityManager entityManager;
+
+	@Override
+	public Optional<Compte> findById(Long numCompte) {
+		return Optional.ofNullable(entityManager.find(Compte.class, numCompte));
+	}
+
+	@Override
+	public List<Compte> findAll() {
+		return entityManager.createQuery("SELECT c FROM Compte c", Compte.class)
+				            .getResultList();
+	}
+
+	@Override
+	public Compte save(Compte compte) {
+		//save() de SpringData au sens saveOrUpdate
+		if(compte.getNumero() != null)
+			compte = entityManager.merge(compte); //update sql
+		else
+			entityManager.persist(compte); //insert into , 
+		                                   //compte.numero comporte pk auto_incr
+		return compte;
+	}
+
+	@Override
+	public void deleteById(Long numCpte) {
+		Compte compte = entityManager.find(Compte.class, numCpte);
+        if(compte != null) {
+        	entityManager.remove(compte);
+        }else {
+        	throw new RuntimeException("suppresion impossible , compte inexistant avec numero="+numCpte);
+        }
+	}
+
+}
